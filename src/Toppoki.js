@@ -20,6 +20,12 @@ exports._newPage = function(browser) {
   };
 };
 
+exports._pages = function(browser) {
+  return function() {
+      return browser.pages();
+  };
+};
+
 exports._goto = function(url, page) {
   return function() {
     return page.goto(url);
