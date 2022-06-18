@@ -74,6 +74,9 @@ launchChromeAWS = runPromiseAffE2 _launchChromeAWS
 newPage :: Browser -> Aff Page
 newPage = runPromiseAffE1 _newPage
 
+pages :: Browser -> Aff (Array Page)
+pages = runPromiseAffE1 _pages
+
 goto :: URL -> Page -> Aff Unit
 goto = runPromiseAffE2 _goto
 
@@ -311,10 +314,12 @@ setUserAgent = runPromiseAffE2 _setUserAgent
 bringToFront :: Page -> Aff Unit
 bringToFront = runPromiseAffE1 _bringToFront
 
+
 foreign import puppeteer :: Puppeteer
 foreign import _launch :: forall options. FU.Fn1 options (Effect (Promise Browser))
 foreign import _launchChromeAWS :: forall options. FU.Fn2 ChromeAWS options (Effect (Promise Browser))
 foreign import _newPage :: FU.Fn1 Browser (Effect (Promise Page))
+foreign import _pages :: FU.Fn1 Browser (Effect (Promise (Array Page)))
 foreign import _goto :: FU.Fn2 URL Page (Effect (Promise Unit))
 foreign import _close :: FU.Fn1 Browser (Effect (Promise Unit))
 foreign import _content :: FU.Fn1 Page (Effect (Promise String))
