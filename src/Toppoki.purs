@@ -314,6 +314,9 @@ setUserAgent = runPromiseAffE2 _setUserAgent
 bringToFront :: Page -> Aff Unit
 bringToFront = runPromiseAffE1 _bringToFront
 
+addScriptTag :: String -> Page -> Aff Unit
+addScriptTag = runPromiseAffE2 _addScriptTag
+
 foreign import puppeteer :: Puppeteer
 foreign import _launch :: forall options. FU.Fn1 options (Effect (Promise Browser))
 foreign import _launchChromeAWS :: forall options. FU.Fn2 ChromeAWS options (Effect (Promise Browser))
@@ -344,3 +347,4 @@ foreign import _keyboardType :: forall options. FU.Fn3 String options Page (Effe
 foreign import _keyboardUp :: forall options. FU.Fn3 KeyboardKey options Page (Effect (Promise Unit))
 foreign import _setUserAgent :: FU.Fn2 String Page (Effect (Promise Unit))
 foreign import _bringToFront :: FU.Fn1 Page (Effect (Promise Unit))
+foreign import _addScriptTag :: FU.Fn2 String Page (Effect (Promise Unit))

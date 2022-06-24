@@ -175,3 +175,9 @@ exports._bringToFront = function(page) {
     return page.bringToFront();
   };
 };
+
+exports._addScriptTag = function(url, page) {
+  return function() {
+      return page.addScriptTag({url: url});
+  };
+};
