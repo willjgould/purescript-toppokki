@@ -153,6 +153,12 @@ onPageError = EU.runEffectFn3 _on "pageerror"
 onLoad :: EU.EffectFn1 Unit Unit -> Page -> Effect Unit
 onLoad = EU.runEffectFn3 _on "load"
 
+onConsole :: EU.EffectFn1 String Unit -> Page -> Effect Unit
+onConsole = EU.runEffectFn3 _on "console"
+
+onRequestFailed :: EU.EffectFn1 String Unit -> Page -> Effect Unit
+onRequestFailed = EU.runEffectFn3 _on "requestfailed"
+
 pageWaitForSelector
   :: forall options trash
    . Row.Union options trash
