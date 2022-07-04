@@ -181,3 +181,13 @@ exports._addScriptTag = function(url, page) {
       return page.addScriptTag({url: url});
   };
 };
+
+exports._consoleMessageText = function(consoleMessage) {
+   return function() {
+      let ret = consoleMessage.text();
+      if(ret)
+	 return ret;
+      else
+	 return "";
+   }
+}

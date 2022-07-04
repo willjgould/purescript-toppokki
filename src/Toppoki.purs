@@ -19,6 +19,7 @@ foreign import data Puppeteer :: Type
 foreign import data Browser :: Type
 foreign import data Page :: Type
 foreign import data ElementHandle :: Type
+foreign import data ConsoleMessage :: Type
 
 -- This is used when one wants to use chrome-aws-lambda version of puppeteer
 foreign import data ChromeAWS :: Type
@@ -153,10 +154,10 @@ onPageError = EU.runEffectFn3 _on "pageerror"
 onLoad :: EU.EffectFn1 Unit Unit -> Page -> Effect Unit
 onLoad = EU.runEffectFn3 _on "load"
 
-onConsole :: EU.EffectFn1 String Unit -> Page -> Effect Unit
+onConsole :: EU.EffectFn1 ConsoleMessage Unit -> Page -> Effect Unit
 onConsole = EU.runEffectFn3 _on "console"
 
-onRequestFailed :: EU.EffectFn1 String Unit -> Page -> Effect Unit
+onRequestFailed :: EU.EffectFn1 Error Unit -> Page -> Effect Unit
 onRequestFailed = EU.runEffectFn3 _on "requestfailed"
 
 pageWaitForSelector
@@ -323,6 +324,9 @@ bringToFront = runPromiseAffE1 _bringToFront
 addScriptTag :: String -> Page -> Aff Unit
 addScriptTag = runPromiseAffE2 _addScriptTag
 
+consoleMessageText :: ConsoleMessage -> Aff String
+consoleMessageText = runPromiseAffE1 _consoleMessageText
+
 foreign import puppeteer :: Puppeteer
 foreign import _launch :: forall options. FU.Fn1 options (Effect (Promise Browser))
 foreign import _launchChromeAWS :: forall options. FU.Fn2 ChromeAWS options (Effect (Promise Browser))
@@ -354,3 +358,4 @@ foreign import _keyboardUp :: forall options. FU.Fn3 KeyboardKey options Page (E
 foreign import _setUserAgent :: FU.Fn2 String Page (Effect (Promise Unit))
 foreign import _bringToFront :: FU.Fn1 Page (Effect (Promise Unit))
 foreign import _addScriptTag :: FU.Fn2 String Page (Effect (Promise Unit))
+foreign import _consoleMessageText :: FU.Fn1 ConsoleMessage (Effect (Promise String))
