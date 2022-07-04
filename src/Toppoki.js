@@ -184,6 +184,9 @@ exports._addScriptTag = function(url, page) {
 
 exports._consoleMessageText = function(consoleMessage) {
    return function() {
+      return "ASDF";
+      console.log("A " + consoleMessage);
+      console.log("B " + consoleMessage.text());
       let ret = consoleMessage.text();
       if(ret)
 	 return ret;
