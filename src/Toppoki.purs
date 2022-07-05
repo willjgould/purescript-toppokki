@@ -7,6 +7,7 @@ import Control.Promise as Promise
 import Data.Function.Uncurried as FU
 import Data.Newtype (class Newtype)
 import Effect (Effect)
+import Effect.Class (liftEffect)
 import Effect.Aff (Aff)
 import Effect.Exception (Error)
 import Effect.Uncurried as EU
@@ -325,7 +326,7 @@ addScriptTag :: String -> Page -> Aff Unit
 addScriptTag = runPromiseAffE2 _addScriptTag
 
 consoleMessageText :: ConsoleMessage -> Aff String
-consoleMessageText = runPromiseAffE1 _consoleMessageText
+consoleMessageText = liftEffect <<< _consoleMessageText
 
 foreign import puppeteer :: Puppeteer
 foreign import _launch :: forall options. FU.Fn1 options (Effect (Promise Browser))
@@ -358,4 +359,4 @@ foreign import _keyboardUp :: forall options. FU.Fn3 KeyboardKey options Page (E
 foreign import _setUserAgent :: FU.Fn2 String Page (Effect (Promise Unit))
 foreign import _bringToFront :: FU.Fn1 Page (Effect (Promise Unit))
 foreign import _addScriptTag :: FU.Fn2 String Page (Effect (Promise Unit))
-foreign import _consoleMessageText :: FU.Fn1 ConsoleMessage (Effect (Promise String))
+foreign import _consoleMessageText :: FU.Fn1 ConsoleMessage (Effect String)
