@@ -1,4 +1,4 @@
-var puppeteer = require("puppeteer");
+var puppeteer = require("puppeteer-core");
 
 exports.puppeteer = puppeteer;
 
