@@ -7,6 +7,7 @@ import Control.Promise as Promise
 import Data.Function.Uncurried as FU
 import Data.Newtype (class Newtype)
 import Effect (Effect)
+import Effect.Class (liftEffect)
 import Effect.Aff (Aff)
 import Effect.Exception (Error)
 import Effect.Uncurried as EU
@@ -19,6 +20,7 @@ foreign import data Puppeteer :: Type
 foreign import data Browser :: Type
 foreign import data Page :: Type
 foreign import data ElementHandle :: Type
+foreign import data ConsoleMessage :: Type
 
 -- This is used when one wants to use chrome-aws-lambda version of puppeteer
 foreign import data ChromeAWS :: Type
@@ -73,6 +75,9 @@ launchChromeAWS = runPromiseAffE2 _launchChromeAWS
 
 newPage :: Browser -> Aff Page
 newPage = runPromiseAffE1 _newPage
+
+pages :: Browser -> Aff (Array Page)
+pages = runPromiseAffE1 _pages
 
 goto :: URL -> Page -> Aff Unit
 goto = runPromiseAffE2 _goto
@@ -149,6 +154,12 @@ onPageError = EU.runEffectFn3 _on "pageerror"
 
 onLoad :: EU.EffectFn1 Unit Unit -> Page -> Effect Unit
 onLoad = EU.runEffectFn3 _on "load"
+
+onConsole :: EU.EffectFn1 ConsoleMessage Unit -> Page -> Effect Unit
+onConsole = EU.runEffectFn3 _on "console"
+
+onRequestFailed :: EU.EffectFn1 Error Unit -> Page -> Effect Unit
+onRequestFailed = EU.runEffectFn3 _on "requestfailed"
 
 pageWaitForSelector
   :: forall options trash
@@ -311,10 +322,17 @@ setUserAgent = runPromiseAffE2 _setUserAgent
 bringToFront :: Page -> Aff Unit
 bringToFront = runPromiseAffE1 _bringToFront
 
+addScriptTag :: String -> Page -> Aff Unit
+addScriptTag = runPromiseAffE2 _addScriptTag
+
+consoleMessageText :: ConsoleMessage -> Aff String
+consoleMessageText = liftEffect <<< _consoleMessageText
+
 foreign import puppeteer :: Puppeteer
 foreign import _launch :: forall options. FU.Fn1 options (Effect (Promise Browser))
 foreign import _launchChromeAWS :: forall options. FU.Fn2 ChromeAWS options (Effect (Promise Browser))
 foreign import _newPage :: FU.Fn1 Browser (Effect (Promise Page))
+foreign import _pages :: FU.Fn1 Browser (Effect (Promise (Array Page)))
 foreign import _goto :: FU.Fn2 URL Page (Effect (Promise Unit))
 foreign import _close :: FU.Fn1 Browser (Effect (Promise Unit))
 foreign import _content :: FU.Fn1 Page (Effect (Promise String))
@@ -340,3 +358,5 @@ foreign import _keyboardType :: forall options. FU.Fn3 String options Page (Effe
 foreign import _keyboardUp :: forall options. FU.Fn3 KeyboardKey options Page (Effect (Promise Unit))
 foreign import _setUserAgent :: FU.Fn2 String Page (Effect (Promise Unit))
 foreign import _bringToFront :: FU.Fn1 Page (Effect (Promise Unit))
+foreign import _addScriptTag :: FU.Fn2 String Page (Effect (Promise Unit))
+foreign import _consoleMessageText :: FU.Fn1 ConsoleMessage (Effect String)

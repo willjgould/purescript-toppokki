@@ -1,101 +1,108 @@
-import puppeteer from "puppeteer";
-export {puppeteer};
+import puppeteer from "puppeteer-core";
 
-export function _launch(options) {
+export default puppeteer = puppeteer;
+
+export const _launch = function(options) {
   return function() {
     return puppeteer.launch(options);
   };
 }
 
-export function _launchChromeAWS(chromium, options) {
+export const _launchChromeAWS = function(chromium, options) {
   return function() {
     return chromium.puppeteer.launch(options);
   };
 }
 
-export function _newPage(browser) {
+export const _newPage = function(browser) {
   return function() {
     return browser.newPage();
   };
 }
 
-export function _goto(url, page) {
+export const _pages = function(browser) {
+  return function() {
+      return browser.pages();
+  };
+};
+
+export const _goto = function(url, page) {
   return function() {
     return page.goto(url);
   };
 }
 
-export function _close(browser) {
+export const _close = function(browser) {
   return function() {
     return browser.close();
   };
 }
 
-export function _content(page) {
+export const _content = function(page) {
   return function() {
     return page.content();
   };
 }
 
-export function _screenshot(options, page) {
+export const _screenshot = function(options, page) {
   return function() {
     return page.screenshot(options);
   };
 }
 
-export function _pdf(options, page) {
+export const _pdf = function(options, page) {
   return function() {
     return page.pdf(options);
   };
 }
 
-export function _on(event, callback, page) {
+export const _on = function(event, callback, page) {
   return page.on(event, callback);
 }
 
-export function _pageWaitForSelector(selector, options, page) {
+export const _pageWaitForSelector = function(selector, options, page) {
   return function() {
     return page.waitForSelector(selector, options);
   };
 }
 
-export function _focus(selector, page) {
+export const _focus = function(selector, page) {
   return function() {
     return page.focus(selector);
   };
 }
 
-export function _select(selector, string, page) {
+export const _select = function(selector, string, page) {
   return function() {
     return page.select(selector, string);
   };
 }
 
-export function _type(selector, content, options, page) {
+export const _type = function(selector, content, options, page) {
   return function() {
     return page.type(selector, content, options);
   };
 }
 
-export function _setViewport(viewport, page) {
+export const _setViewport = function(viewport, page) {
   return function() {
     return page.setViewport(viewport);
   };
 }
 
-export function _click(selector, page) {
+export const _click = function(selector, page) {
   return function() {
     return page.click(selector);
   };
 }
 
-export function _waitForNavigation(options, page) {
+export const _waitForNavigation = function(options, page) {
   return function() {
     return page.waitForNavigation(options);
   };
 }
 
-export function _getLocationHref(page) {
+export const _getLocationHref = function(page) {
   return function() {
     return page.evaluate(function() {
       return window.location.href;
@@ -103,68 +110,84 @@ export function _getLocationHref(page) {
   };
 }
 
-export function _unsafeEvaluateOnNewDocument(string, page) {
+export const _unsafeEvaluateOnNewDocument = function(string, page) {
   return function() {
      return page.evaluateOnNewDocument(string);
   }
 }
 
-export function _unsafeEvaluateStringFunction(string, page) {
+export const _unsafeEvaluateStringFunction = function(string, page) {
   return function() {
     return page.evaluate(string);
   };
 }
 
-export function _unsafePageEval(selector, fnStr, page) {
+export const _unsafePageEval = function(selector, fnStr, page) {
   return function() {
     return page.$eval(selector, eval(fnStr));
   };
 }
 
-export function _unsafePageEvalAll(selector, fnStr, page) {
+export const _unsafePageEvalAll = function(selector, fnStr, page) {
   return function() {
     return page.$$eval(selector, eval(fnStr));
   };
 }
 
-export function _keyboardDown(string, options, page) {
+export const _keyboardDown = function(string, options, page) {
   return function() {
     return page.keyboard.down(string, options);
   };
 }
 
-export function _keyboardPress(key, options, page) {
+export const _keyboardPress = function(key, options, page) {
   return function() {
     return page.keyboard.press(key, options);
   };
 }
 
-export function _keyboardSendCharacter(char, page) {
+export const _keyboardSendCharacter = function(char, page) {
   return function() {
     return page.keyboard.sendCharacter(char);
   };
 }
 
-export function _keyboardType(text, options, page) {
+export const _keyboardType = function(text, options, page) {
   return function() {
     return page.keyboard.type(text, options);
   };
 }
 
-export function _keyboardUp(string, options, page) {
+export const _keyboardUp = function(string, options, page) {
   return function() {
     return page.keyboard.up(string, options);
   };
 }
 
-export function _setUserAgent(string, page) {
+export const _setUserAgent = function(string, page) {
   return function() {
     return page.setUserAgent(string);
   };
 }
 
-export function _bringToFront(page) {
+export const _bringToFront = function(page) {
   return function() {
     return page.bringToFront();
   };
-}
+};
+
+export const _addScriptTag = function(url, page) {
+  return function() {
+      return page.addScriptTag({url: url});
+  };
+};
+
+export const _consoleMessageText = function(consoleMessage) {
+   return function() {
+      let ret = consoleMessage.text();
+      if(ret)
+         return ret;
+      else
+         return "";
+   };
+};
