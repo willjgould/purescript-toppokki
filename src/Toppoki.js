@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer-core";
 
-export default puppeteer = puppeteer;
+export const _puppeteer = puppeteer;
 
 export const _launch = function(options) {
   return function() {

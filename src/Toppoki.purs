@@ -328,7 +328,10 @@ addScriptTag = runPromiseAffE2 _addScriptTag
 consoleMessageText :: ConsoleMessage -> Aff String
 consoleMessageText = liftEffect <<< _consoleMessageText
 
-foreign import puppeteer :: Puppeteer
+puppeteer = :: Puppeteer
+puppeteer = _puppeteer
+
+foreign import _puppeteer :: Puppeteer
 foreign import _launch :: forall options. FU.Fn1 options (Effect (Promise Browser))
 foreign import _launchChromeAWS :: forall options. FU.Fn2 ChromeAWS options (Effect (Promise Browser))
 foreign import _newPage :: FU.Fn1 Browser (Effect (Promise Page))
