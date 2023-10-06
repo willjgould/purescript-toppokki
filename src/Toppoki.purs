@@ -328,7 +328,7 @@ addScriptTag = runPromiseAffE2 _addScriptTag
 consoleMessageText :: ConsoleMessage -> Aff String
 consoleMessageText = liftEffect <<< _consoleMessageText
 
-puppeteer = :: Puppeteer
+puppeteer :: Puppeteer
 puppeteer = _puppeteer
 
 foreign import _puppeteer :: Puppeteer
